@@ -70,7 +70,13 @@
   },
   "jupyterlab": {
     "extension": true,
-    "outputDir": "mpy_web_kernel/labextension"
+    "outputDir": "mpy_web_kernel/labextension",
+    "sharedPackages": {
+      "@jupyterlite/kernel": {
+        "bundled": false,
+        "singleton": true
+      }
+    }
   },
   "jupyterlite": {
     "liteExtension": true
