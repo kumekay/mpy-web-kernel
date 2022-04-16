@@ -6,7 +6,7 @@ Micropython kernel with WebSerial
 
 ## Requirements
 
-* JupyterLite >= 0.1.0a10
+- JupyterLite >= 0.1.0a10
 
 ## Install
 
@@ -53,17 +53,26 @@ jupyter labextension develop . --overwrite
 jlpm run build
 ```
 
+Run WS test server
+
+```bash
+cd test_wsserver
+pipenv install
+pipenv run ws_server
+```
+
 You can watch the source directory and run JupyterLab at the same time in different terminals to watch for changes in the extension's source and automatically rebuild the extension.
 
 ```bash
 # Watch the source directory in one terminal, automatically rebuilding when needed
 jlpm run watch
-# Run JupyterLab in another terminal
-jupyter lab
+
+
+# Run JupyterLite in another terminal
+jupyter lite serve
 ```
 
 With the watch command running, every saved change will immediately be built locally and available in your running JupyterLab. Refresh JupyterLab to load the change in your browser (you may need to wait several seconds for the extension to be rebuilt).
-
 
 ### Development uninstall
 

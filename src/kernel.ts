@@ -8,9 +8,22 @@ import { KernelMessage } from '@jupyterlab/services';
 import { BaseKernel } from '@jupyterlite/kernel';
 
 export class MpyWebKernel extends BaseKernel {
+  ws: WebSocket;
+
   constructor(options: any) {
-    console.log('mpy-web-kernel is created!');
     super(options);
+    this.ws = new WebSocket('ws://localhost:8765');
+
+    let that = this;
+    this.ws.onmessage = function (event) {
+      that.publishExecuteResult({
+        execution_count: that.executionCount,
+        metadata: {},
+        data: {
+          'text/plain': event.data
+        }
+      });
+    };
   }
 
   // Info about the kernel
@@ -43,14 +56,7 @@ export class MpyWebKernel extends BaseKernel {
   ): Promise<IExecuteReplyMsg['content']> {
     const { code } = content;
 
-    this.publishExecuteResult({
-      execution_count: this.executionCount,
-      metadata: {},
-      data: {
-        // Just do something simple for now
-        'text/plain': code.toUpperCase()
-      }
-    });
+    this.ws.send(code);
 
     return {
       status: 'ok',
