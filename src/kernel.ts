@@ -16,11 +16,12 @@ export class MpyWebKernel extends BaseKernel {
 
     let that = this;
     this.ws.onmessage = function (event) {
+      const data = JSON.parse(event.data);
       that.publishExecuteResult({
-        execution_count: that.executionCount,
+        execution_count: data.executionCount,
         metadata: {},
         data: {
-          'text/plain': event.data
+          'text/plain': data.result
         }
       });
     };
@@ -55,8 +56,12 @@ export class MpyWebKernel extends BaseKernel {
     content: IExecuteRequestMsg['content']
   ): Promise<IExecuteReplyMsg['content']> {
     const { code } = content;
+    const data = {
+      executionCount: this.executionCount,
+      code: code
+    };
 
-    this.ws.send(code);
+    this.ws.send(JSON.stringify(data));
 
     return {
       status: 'ok',
